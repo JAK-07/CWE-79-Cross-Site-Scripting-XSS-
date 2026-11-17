@@ -29,17 +29,24 @@ To demonstrate real-world impact (session hijacking), a payload was injected to 
 ```html
 <script>alert(document.cookie);</script>
 ```
+
 ## 3. Advanced Payload: DOM Defacement
 To simulate complete client-side manipulation, a script was executed to rewrite the page content dynamically:
 ```
 <script>document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:20vh;">[!] SECURITY ALERT: This application has been defaced via CWE-79 XSS.</h1>';</script>
 ```
+
 ## Impact: 
 Proves that an attacker can completely alter the visual presentation of the application to conduct phishing or deliver malicious UI prompts.
+
 ## Evidence & Artifacts
-Session Cookie Exfiltration Evidence
-DOM Defacement Evidence
-![DOM Defacement Execution](DOM Defacement.jpg)
+
+### Session Cookie Exfiltration
+![Session Cookie Exfiltration](document.cookie.jpg)
+
+### DOM Defacement Execution
+![DOM Defacement Execution](<DOM Defacement.jpg>)
+
 ## Detection Engineering & Log Analysis
 ### Container Log & WAF Indicators
 Because Reflected XSS payloads are passed directly via HTTP GET request parameters, monitoring solutions and web server logs (Apache access logs) capture the raw strings
