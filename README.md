@@ -29,6 +29,27 @@ To demonstrate real-world impact (session hijacking), a payload was injected to 
 ```html
 <script>alert(document.cookie);</script>
 ```
-## Advanced Payload: DOM Defacement
+## 3. Advanced Payload: DOM Defacement
 To simulate complete client-side manipulation, a script was executed to rewrite the page content dynamically:
+```
 <script>document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:20vh;">[!] SECURITY ALERT: This application has been defaced via CWE-79 XSS.</h1>';</script>
+```
+## Impact: 
+Proves that an attacker can completely alter the visual presentation of the application to conduct phishing or deliver malicious UI prompts.
+## Evidence & Artifacts
+Session Cookie Exfiltration Evidence
+DOM Defacement Evidence
+![DOM Defacement Execution](DOM Defacement.jpg)
+## Detection Engineering & Log Analysis
+### Container Log & WAF Indicators
+Because Reflected XSS payloads are passed directly via HTTP GET request parameters, monitoring solutions and web server logs (Apache access logs) capture the raw strings
+### Detection Strategy & SIEM Rules
+Signature Focus: Inspect query strings for HTML bracket tags (%3Cscript%3E, <script>) or JavaScript event handlers (onerror=, onload=, javascript:).
+
+## Mitigation / Defense-in-Depth:
+
+### Context-Aware Output Encoding: 
+Ensure all user-supplied data is HTML-entity encoded before being rendered back into the DOM.
+
+### Content Security Policy (CSP):  
+Implement strict CSP headers (Content-Security-Policy: default-src 'self') to disable inline script execution.
